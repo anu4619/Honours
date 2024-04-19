@@ -1,11 +1,22 @@
-import { readFile } from 'fs/promises';
+import fs from 'fs';
 
-
-readFile('poem.txt', 'utf8')
-  .then(data => {
-    console.log('Contents of the poem:');
-    console.log(data);
-  })
-  .catch(err => {
-    console.error('Error reading the file:', err);
+function readPoem(callback) {
+  fs.readFile('poem.txt', 'utf8', (err, data) => {
+    if (err) {
+      callback(err, null);
+      return;
+    }
+    callback(null, data);
   });
+}
+
+// Example of using readPoem function with a callback
+readPoem((err, poemData) => {
+  if (err) {
+    console.error('Error reading the file:', err);
+    return;
+  }
+  console.log('Contents of the poem:');
+  console.log(poemData);
+});
+
